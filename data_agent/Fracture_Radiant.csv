@@ -1,0 +1,26 @@
+Agent,Role,Tier,Score,Trend,Win %,Pick %,Dmg/Round,KDA
+astraAstra,Controller,Weak / C,36.75,NEW,37.10%,2.42%,155.48,1.95
+breachBreach,Initiator,Good / A,51.44,-0.46,65.00%,0.78%,146.55,1.92
+brimstoneBrimstone,Controller,Bad / D,31.58,-31.19,33.33%,1.53%,173.13,1.68
+chamberChamber,Sentinel,Fair / B,47.12,+7.86,43.14%,5.98%,150.66,1.51
+cloveClove,Controller,Strong / S,66.40,+3.50,72.39%,5.24%,130.42,1.94
+cypherCypher,Sentinel,Fair / B,46.59,NEW,63.16%,1.49%,82.92,1.23
+deadlockDeadlock,Sentinel,Fair / B,47.65,NEW,58.62%,2.27%,156.40,1.15
+fadeFade,Initiator,Fair / B,45.70,NEW,46.67%,1.76%,227.18,2.28
+gekkoGekko,Initiator,Weak / C,45.31,+10.56,45.74%,3.68%,178.59,1.69
+harborHarbor,Controller,Not Placed,0.00,NEW,0.00%,0.00%,0.00,0.00
+isoIso,Duelist,Strong / S,66.56,+1.65,56.39%,8.88%,219.60,1.78
+jettJett,Duelist,Strong / S,69.74,-3.63,50.49%,12.08%,189.03,1.97
+kayoKAY/O,Initiator,Fair / B,45.39,NEW,51.16%,1.68%,175.88,1.96
+killjoyKilljoy,Sentinel,Good / A,49.79,-4.37,56.63%,3.25%,166.45,1.34
+neonNeon,Duelist,God / S+,85.65,NEW,57.52%,16.39%,211.05,2.03
+omenOmen,Controller,Not Placed,0.00,NEW,0.00%,0.00%,0.00,0.00
+phoenixPhoenix,Duelist,Bad / D,21.42,NEW,25.71%,1.37%,113.74,1.10
+razeRaze,Duelist,Not Placed,0.00,NEW,0.00%,0.00%,0.00,0.00
+reynaReyna,Duelist,God / S+,80.73,+35.40,56.32%,14.86%,192.82,2.06
+sageSage,Sentinel,Good / A,49.17,NEW,45.83%,2.82%,265.79,2.32
+skyeSkye,Initiator,Not Placed,0.00,NEW,0.00%,0.00%,0.00,0.00
+sovaSova,Initiator,Good / A,48.05,+14.15,42.22%,3.52%,275.87,2.16
+viperViper,Controller,Bad / D,20.99,NEW,27.78%,2.11%,66.39,0.67
+vyseVyse,Sentinel,Weak / C,40.96,NEW,35.35%,3.87%,206.78,1.98
+yoruYoru,Duelist,Good / A,53.02,+12.70,45.56%,3.52%,302.16,2.57

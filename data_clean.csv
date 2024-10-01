@@ -1,0 +1,26 @@
+Agent,Role,Tier,Score,Trend,Win %,Pick %,Dmg/Round,KDA,Map,Rank_x,Play %,Attacker Win %,Attacker KDA,Defender Win %,Defender KDA,Rank_y,Best Site,A Pick %,A Defuse %,B Pick %,B Defuse %,C Pick %,C Defuse %,Rank
+Astra,Controller,Fair / B,41.52,-3.62,49.55%,2.20%,137.38,1.45,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Breach,Initiator,Fair / B,39.95,-0.44,50.23%,1.94%,131.71,1.39,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Brimstone,Controller,Weak / C,33.76,-2.15,49.17%,1.24%,130.18,1.42,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Chamber,Sentinel,Good / A,53.72,0.49,50.22%,4.30%,147.13,1.33,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Clove,Controller,Strong / S,85.73,2.79,51.10%,9.27%,152.67,1.5,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Cypher,Sentinel,Strong / S,69.57,3.25,50.27%,7.83%,132.8,1.32,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Deadlock,Sentinel,Fair / B,42.16,1.83,50.49%,2.48%,134.06,1.29,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Fade,Initiator,Bad / D,26.47,-5.56,48.44%,1.10%,120.93,1.25,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Gekko,Initiator,Good / A,54.3,-0.26,50.16%,5.36%,126.86,1.25,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Harbor,Controller,Bad / D,25.82,-0.64,48.44%,0.64%,128.17,1.28,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Iso,Duelist,Strong / S,61.85,1.52,50.35%,5.22%,161.57,1.37,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Jett,Duelist,God / S+,97.37,2.05,50.18%,12.56%,154.48,1.32,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Kayoka,Initiator,Weak / C,35.39,-0.53,48.65%,1.76%,130.86,1.44,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Killjoy,Sentinel,Bad / D,33.03,-3.36,50.29%,1.14%,132.05,1.21,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Neon,Duelist,Good / A,50.46,0.09,50.27%,3.97%,143.94,1.27,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Omen,Controller,Good / A,57.28,1.02,49.14%,5.56%,144.85,1.36,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Phoenix,Duelist,Fair / B,41.58,7.03,49.32%,2.35%,149.65,1.34,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Raze,Duelist,Fair / B,43.65,5.44,50.12%,2.39%,151.48,1.3,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Reyna,Duelist,God / S+,85.79,2.77,50.44%,9.76%,157.94,1.41,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Sage,Sentinel,Good / A,49.77,-7.26,50.10%,4.36%,127.77,1.29,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Skye,Initiator,Weak / C,33.47,-0.28,49.49%,1.41%,127.61,1.33,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Sova,Initiator,Strong / S,70.07,3.19,50.20%,7.70%,137.46,1.35,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Viper,Controller,Weak / C,33.49,1.59,50.37%,0.43%,141.18,1.35,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Vyse,Sentinel,Good / A,44.46,-8.97,50.05%,2.75%,138.1,1.37,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
+Yoru,Duelist,Fair / B,39.33,-0.02,49.22%,2.46%,140.41,1.28,Abyss,Allrank,11.64%,50.94%,1.29,49.06%,1.35,Allrank,A,48.81%,25.90%,51.19%,33.88%,40.27%,29.65%,Allrank
