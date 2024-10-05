@@ -1,8 +1,12 @@
 import pandas as pd
 import joblib
+from tensorflow.keras.models import load_model
+from tensorflow.keras.losses import MeanSquaredError
 
+# โหลดโมเดล พร้อม custom objects
+model = load_model('cnn_model.h5', custom_objects={'mse': MeanSquaredError()})
 # โหลดโมเดลที่ฝึกไว้
-model = joblib.load('model.pkl')
+# model = joblib.load('model.pkl')
 
 # ฟังก์ชันสำหรับการคาดการณ์ทีมชนะ
 def predict_team_winner_from_training_data(training_data, agent_a_list, agent_b_list, map_name):
@@ -69,5 +73,5 @@ if __name__ == '__main__':
     predicted_team_winner, predicted_win_rate = predict_team_winner_from_training_data(training_data, agent_a_list, agent_b_list, map_name)
 
     # แสดงผลการคาดการณ์
-    print(f'ผลการคาดการณ์ทีมที่ชนะจากข้อมูลการฝึก: {predicted_team_winner}')
+    print(f'ผลการคาดการณ์ทีมที่ชนะจากข้อมูลการฝึก: {predicted_team_winner} : {predicted_win_rate}')
 
