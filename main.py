@@ -1,77 +1,91 @@
-import pandas as pd
-import joblib
-from tensorflow.keras.models import load_model
-from tensorflow.keras.losses import MeanSquaredError
+# import numpy as np
+# import pandas as pd
+# from tensorflow.keras.models import load_model
+# from tensorflow.keras.losses import MeanSquaredError
 
-# โหลดโมเดล พร้อม custom objects
-model = load_model('cnn_model.h5', custom_objects={'mse': MeanSquaredError()})
-# โหลดโมเดลที่ฝึกไว้
-# model = joblib.load('model.pkl')
+# # โหลดโมเดล พร้อม custom objects
+# model = load_model('cnn_model.h5', custom_objects={'mse': MeanSquaredError()})
 
-# ฟังก์ชันสำหรับการคาดการณ์ทีมชนะ
-def predict_team_winner_from_training_data(training_data, agent_a_list, agent_b_list, map_name):
-    # สร้าง DataFrame สำหรับข้อมูล input
-    data = []
+# def convert_percentage(value):
+#     """Convert percentage string to float."""
+#     if isinstance(value, str) and '%' in value:
+#         return float(value.replace('%', '').strip()) / 100.0  # แปลงเป็นค่า float
+#     return float(value) if isinstance(value, (int, float)) else np.nan  # แปลงเป็น float ถ้าเป็น int หรือ float
 
-    for agent_a, agent_b in zip(agent_a_list, agent_b_list):
-        # ดึงข้อมูลจาก DataFrame ที่ใช้ในการฝึกโมเดล
-        entry_a = training_data[training_data['Agent'] == agent_a]
-        entry_b = training_data[training_data['Agent'] == agent_b]
+# def predict_team_winner(training_data, agent_a_list, agent_b_list, map_name):
+#     data = []
 
-        # คำนวณค่าที่ต้องใช้ในการคาดการณ์
-        if not entry_a.empty and not entry_b.empty:
-            row_a = entry_a.iloc[0]
-            row_b = entry_b.iloc[0]
+#     for agent_a, agent_b in zip(agent_a_list, agent_b_list):
+#         entry_a = training_data[training_data['Agent'] == agent_a]
+#         entry_b = training_data[training_data['Agent'] == agent_b]
 
-            data.append({
-                'Score': (row_a['Score'] + row_b['Score']) / 2,  # คำนวณคะแนนเฉลี่ย
-                'Trend': row_a['Trend'],  # ใช้ Trend ของ Agent A
-                'Pick %': (float(row_a['Pick %'].replace('%', '')) + float(row_b['Pick %'].replace('%', ''))) / 2,  # คำนวณ Pick %
-                'Dmg/Round': (row_a['Dmg/Round'] + row_b['Dmg/Round']) / 2,  # คำนวณ Damage ต่อรอบเฉลี่ย
-                'KDA': (row_a['KDA'] + row_b['KDA']) / 2,  # คำนวณ KDA เฉลี่ย
-                'Map': map_name,
-                'Agent A': agent_a,
-                'Agent B': agent_b
-            })
+#         if not entry_a.empty and not entry_b.empty:
+#             row_a = entry_a.iloc[0]
+#             row_b = entry_b.iloc[0]
 
-    # สร้าง DataFrame จากข้อมูลทั้งหมด
-    df_input = pd.DataFrame(data)
+#             # ใช้ Trend ของ Agent ที่ชนะ (หรือเฉลี่ยระหว่างทั้งสอง)
+#             trend_value = row_a['Trend'] if row_a['Score'] >= row_b['Score'] else row_b['Trend']
+            
+#             data.append({
+#                 'Score': (row_a['Score'] + row_b['Score']) / 2,
+#                 'Pick %': (convert_percentage(row_a['Pick %']) + convert_percentage(row_b['Pick %'])) / 2,
+#                 'Dmg/Round': (row_a['Dmg/Round'] + row_b['Dmg/Round']) / 2,
+#                 'KDA': (row_a['KDA'] + row_b['KDA']) / 2,
+#                 'Trend': trend_value  # ใช้ค่า Trend ที่ถูกต้อง
+#             })
 
-    # แปลง Trend และ Map เป็นตัวเลข (ทำให้ตรงกับที่โมเดลคาดหวัง)
-    df_input = pd.get_dummies(df_input, columns=['Trend', 'Map'], drop_first=True)
+#     df_input = pd.DataFrame(data)
 
-    # ตรวจสอบว่าฟีเจอร์ใน df_input ตรงกับที่โมเดลใช้หรือไม่
-    expected_features = model.feature_names_in_
-    missing_features = [feature for feature in expected_features if feature not in df_input.columns]
-    
-    # เพิ่มฟีเจอร์ที่ขาดหายไปด้วยค่าเริ่มต้น (ถ้าต้องการ)
-    for feature in missing_features:
-        df_input[feature] = 0
+#     # แปลง Trend เป็นตัวเลขด้วย one-hot encoding
+#     df_input = pd.get_dummies(df_input, columns=['Trend'], drop_first=True)
 
-    # จัดเรียงคอลัมน์ให้ตรงกับที่โมเดลคาดหวัง
-    df_input = df_input[expected_features]
+#     # ตรวจสอบให้แน่ใจว่าฟีเจอร์ทั้งหมดถูกต้อง
+#     expected_features = ['Score', 'Pick %', 'Dmg/Round', 'KDA']  # ต้องรวมฟีเจอร์ที่โมเดลคาดหวัง
+#     df_input = df_input[expected_features]
 
-    # ทำการคาดการณ์
-    predicted_win_rate = model.predict(df_input)
+#     # ตรวจสอบว่ามีฟีเจอร์ที่ขาด และเติมค่าจาก training_data
+#     for feature in expected_features:
+#         if df_input[feature].isnull().any() or (df_input[feature] == 0).any():
+#             # หาค่าจาก training_data สำหรับ agent ที่ตรงกัน
+#             match_row = training_data[training_data['Agent'].isin(agent_a_list + agent_b_list)].mean()  # ใช้ค่าเฉลี่ยของ Agent ที่ตรงกัน
+#             if pd.isna(df_input[feature]).all() or (df_input[feature] == 0).all():
+#                 # ตรวจสอบประเภทของฟีเจอร์ว่ามีค่าที่ต้องแปลง
+#                 if feature == 'Pick %':
+#                     df_input[feature] = convert_percentage(match_row[feature])
+#                 else:
+#                     df_input[feature] = match_row[feature]
 
-    # สร้างผลลัพธ์ว่าทีม A หรือ B ชนะ
-    team_wins = []
-    if predicted_win_rate.mean() >= 0.5:
-        team_wins.append("ทีม A ชนะ")
-    else:
-        team_wins.append("ทีม B ชนะ")
+#     # เติมฟีเจอร์เพิ่มเติมให้ครบ 28 ตัว
+#     while df_input.shape[1] < 28:
+#         # เติมค่าจาก training_data
+#         extra_feature = training_data[expected_features].mean()  # ค่าเฉลี่ยจาก training_data
+#         df_input[f'Extra_Feature_{df_input.shape[1] + 1}'] = extra_feature
 
-    return team_wins[0], predicted_win_rate  # คืนค่าผลลัพธ์เป็นข้อความเดียวและอัตราการชนะ
+#     # ตรวจสอบจำนวนฟีเจอร์ที่โมเดลต้องการ
+#     print(f"Input shape before reshaping: {df_input.shape}")
 
-if __name__ == '__main__':
-    training_data = pd.read_csv('data_clean.csv')
+#     # reshape input
+#     df_input = df_input.values.reshape((df_input.shape[0], 28, 1))
 
-    agent_a_list = input("กรุณากรอกชื่อ Agent Team A (คั่นด้วยเครื่องหมายจุลภาค): ").split(',')
-    agent_b_list = input("กรุณากรอกชื่อ Agent Team B (คั่นด้วยเครื่องหมายจุลภาค): ").split(',')
-    map_name = input("กรุณากรอกชื่อแผนที่: ")
+#     # ตรวจสอบ shape ของ df_input
+#     print(f"Input shape after reshaping: {df_input.shape}")
 
-    predicted_team_winner, predicted_win_rate = predict_team_winner_from_training_data(training_data, agent_a_list, agent_b_list, map_name)
+#     # ทำการคาดการณ์
+#     predicted_win_rate = model.predict(df_input)
 
-    # แสดงผลการคาดการณ์
-    print(f'ผลการคาดการณ์ทีมที่ชนะจากข้อมูลการฝึก: {predicted_team_winner} : {predicted_win_rate}')
+#     team_wins = "Team A Win" if predicted_win_rate.mean() >= 0.5 else "Team B Win"
+#     return team_wins, predicted_win_rate
+
+# if __name__ == '__main__':
+#     training_data = pd.read_csv('data_clean.csv')
+
+#     # รับข้อมูลจากผู้ใช้
+#     agent_a_list = ['Killjoy', 'Brimstone', 'Raze', 'Sova', 'Breach']
+#     agent_b_list = ['Breach', 'Killjoy', 'Raze', 'Brimstone', 'Viper']
+#     map_name = 'Fracture'
+
+#     predicted_team_winner, predicted_win_rate = predict_team_winner(training_data, agent_a_list, agent_b_list, map_name)
+
+#     print(f'ผลการคาดการณ์ทีมที่ชนะ: {predicted_team_winner}')
+#     print(f'Win rate: {predicted_win_rate.mean()*100:.2f}%')
 

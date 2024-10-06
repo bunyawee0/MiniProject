@@ -19,14 +19,12 @@ features = [
     'B Defuse %', 'C Pick %', 'C Defuse %'
 ]
 
-# สร้างตัวแปรเป้าหมาย
 data['Winner'] = (data['Win %'] > 0.5).astype(int)  # 1 = Team A ชนะ, 0 = Team B ชนะ
 
 # เตรียมข้อมูลสำหรับการฝึกโมเดล
 X = data[features].values
 y = data['Winner'].values
 
-# แบ่งข้อมูลเป็นชุดฝึกและชุดทดสอบ
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Reshape ข้อมูลให้เป็น (samples, 14, 1)

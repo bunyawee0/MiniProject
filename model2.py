@@ -43,6 +43,8 @@ model = models.Sequential([
     layers.MaxPooling1D(pool_size=2),
     layers.Conv1D(filters=32, kernel_size=2, activation='relu'),
     layers.MaxPooling1D(pool_size=2),
+    layers.Conv1D(filters=64, kernel_size=2, activation='relu'),
+    layers.MaxPooling1D(pool_size=2),
     layers.Flatten(),
     layers.Dense(64, activation='relu'),
     layers.Dense(1)  # Output layer for regression (no activation function)
@@ -52,7 +54,9 @@ model = models.Sequential([
 model.compile(optimizer='adam', loss='mse', metrics=['mae'])
 
 # Train the model
-history = model.fit(X_train, y_train, epochs=2, batch_size=4, validation_data=(X_test, y_test))
+ealy_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+epoch = 10
+history = model.fit(X_train, y_train, epochs=epoch, batch_size=32, validation_data=(X_test, y_test), callbacks=ealy_stopping)
 
 # Evaluate the model
 y_pred = model.predict(X_test)
