@@ -1,67 +1,89 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
-import matplotlib.pyplot as plt
-import joblib
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv1D, Flatten, Dense, Dropout
 
-# Load the dataset
-data = pd.read_csv('data_clean.csv')  # Replace with your CSV file path
 
+data = pd.read_csv('data_clean.csv')
+
+# แสดงข้อมูลเบื้องต้น
 print(data.head())
 
-# การเตรียมข้อมูล
-# ลบสัญลักษณ์ '%' และแปลงคอลัมน์เป็นประเภทที่เหมาะสม
-data['Win %'] = data['Win %'].str.replace('%', '').astype(float) / 100
-data['Pick %'] = data['Pick %'].str.replace('%', '').astype(float) / 100
-data['Dmg/Round'] = data['Dmg/Round'].astype(float)
-data['KDA'] = data['KDA'].astype(float)
+# กำหนดฟีเจอร์
+features = [
+    'Score', 'Pick %', 'Dmg/Round', 'KDA', 
+    'Attacker Win %', 'Attacker KDA', 
+    'Defender Win %', 'Defender KDA',
+    'A Pick %', 'A Defuse %', 'B Pick %', 
+    'B Defuse %', 'C Pick %', 'C Defuse %'
+]
 
-# กำหนดฟีเจอร์และเป้าหมาย
-features = data[['Score', 'Trend', 'Pick %', 'Dmg/Round', 'KDA']]
-features = pd.get_dummies(features, columns=['Trend'], drop_first=True)  # แปลง Trend เป็นตัวเลข
-target = data['Win %']
+# สร้างตัวแปรเป้าหมาย
+data['Winner'] = (data['Win %'] > 0.5).astype(int)  # 1 = Team A ชนะ, 0 = Team B ชนะ
 
-# แบ่งข้อมูลออกเป็นชุดฝึกอบรมและชุดทดสอบ
-X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
+# เตรียมข้อมูลสำหรับการฝึกโมเดล
+X = data[features].values
+y = data['Winner'].values
 
-# ใช้ Random Forest Regressor
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
+# แบ่งข้อมูลเป็นชุดฝึกและชุดทดสอบ
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# ทำนายผลในชุดทดสอบ
-y_pred = model.predict(X_test)
+# Reshape ข้อมูลให้เป็น (samples, 14, 1)
+X_train = X_train.reshape((X_train.shape[0], 14, 1))  # (samples, 14, 1)
+X_test = X_test.reshape((X_test.shape[0], 14, 1))    # (samples, 14, 1)
 
-# คำนวณความแม่นยำโดยใช้ Mean Squared Error และ R² Score
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
+# ขั้นตอนที่ 5: สร้างโมเดล Conv1D
+model = Sequential()
+model.add(Conv1D(filters=32, kernel_size=2, activation='relu', input_shape=(14, 1)))  # input_shape = (14, 1)
+model.add(Dropout(0.2))
+model.add(Flatten())
+model.add(Dense(16, activation='relu'))
+model.add(Dense(1, activation='sigmoid')) 
 
-print(f'Mean Squared Error: {mse:.4f}')
-print(f'R² Score: {r2:.4f}')
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-# แสดงกราฟการกระจายค่าที่ทำนายและค่าจริง
-plt.figure(figsize=(10, 6))
-plt.scatter(y_test, y_pred, alpha=0.6)
-plt.plot([0, 1], [0, 1], color='red', linestyle='--')  # เส้นที่แสดงถึงค่าจริง
-plt.title('Actual vs Predicted Win %')
-plt.xlabel('Actual Win %')
-plt.ylabel('Predicted Win %')
-plt.xlim(0, 1)
-plt.ylim(0, 1)
-plt.grid()
-plt.show()
+history = model.fit(X_train, y_train, epochs=50, batch_size=16, validation_data=(X_test, y_test))
 
-# แสดงความสำคัญของฟีเจอร์
-importances = model.feature_importances_
-feature_importance = pd.DataFrame(importances, index=features.columns, columns=["Importance"]).sort_values("Importance", ascending=False)
+loss, accuracy = model.evaluate(X_test, y_test)
+print(f'Test Accuracy: {accuracy:.2f}')
+model.save('cnn_model.h5')
 
-# แสดงกราฟความสำคัญของฟีเจอร์
-plt.figure(figsize=(10, 6))
-feature_importance.plot(kind='barh')
-plt.title('Feature Importance')
-plt.xlabel('Importance')
-plt.ylabel('Features')
-plt.grid()
-plt.show()
+# def predict_winner(agents_a, agents_b, map_name):
 
-joblib.dump(model, 'model.pkl')
+#     new_data = []
+    
+#     for agent in agents_a + agents_b:
+#         agent_data = data[data['Agent'] == agent].iloc[0]
+#         new_data.append([
+#             agent_data['Score'], agent_data['Pick %'], agent_data['Dmg/Round'], agent_data['KDA'],
+#             agent_data['Attacker Win %'], agent_data['Attacker KDA'],
+#             agent_data['Defender Win %'], agent_data['Defender KDA'],
+#             agent_data['A Pick %'], agent_data['A Defuse %'], 
+#             agent_data['B Pick %'], agent_data['B Defuse %'],
+#             agent_data['C Pick %'], agent_data['C Defuse %']
+#         ])
+    
+#     # แปลงข้อมูลใหม่เป็น DataFrame
+#     new_df = pd.DataFrame(new_data, columns=features)
+
+#     # แปลงข้อมูลใหม่เป็นรูปแบบที่เหมาะสมสำหรับการทำนาย
+#     # new_X = new_df.values.reshape((1, 14, 1))  # (1, 14, 1)
+
+#     # ทำนายผล
+#     prediction = model.predict(new_df)
+#     winner = 'Team A' if prediction[0][0] > 0.5 else 'Team B'
+#     return winner
+
+# # รับข้อมูลจากผู้ใช้
+# agents_team_b = ['Omen', 'Cypher', 'Skye', 'Raze', 'Jett']
+# agents_team_a = ['Harbor', 'Killjoy', 'Viper', 'Jett', 'Skye']
+# map_name = 'Lotus'
+
+# # agents_team_b = ['Astra', 'Skye', 'Viper', 'Raze', 'Jett']
+# # agents_team_a = ['Skye', 'Viper', 'Chamber', 'Astra', 'Raze']
+# # map_name = 'Split'
+
+# # ทำนายผู้ชนะ
+# predicted_winner = predict_winner(agents_team_a, agents_team_b, map_name)
+# print(f'The predicted winner is: {predicted_winner}')

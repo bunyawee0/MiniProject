@@ -1,81 +1,73 @@
+
 import numpy as np
 import pandas as pd
-import joblib
 from tensorflow.keras.models import load_model
 from tensorflow.keras.losses import MeanSquaredError
 
-# โหลดโมเดล พร้อม custom objects
-model = load_model('cnn_model.h5', custom_objects={'mse': MeanSquaredError()})
-# โหลดโมเดลที่ฝึกไว้
-# model = joblib.load('model.pkl')
+def predict_winner(agents_a, agents_b, map_name):
+    model = load_model('cnn_model.h5')
 
-# ฟังก์ชันสำหรับการคาดการณ์ทีมชนะ
-def predict_team_winner(training_data, agent_a_list, agent_b_list, map_name):
-    # สร้าง DataFrame สำหรับข้อมูล input
-    data = []
+    features = [
+        'Score', 'Pick %', 'Dmg/Round', 'KDA', 
+        'Attacker Win %', 'Attacker KDA', 
+        'Defender Win %', 'Defender KDA',
+        'A Pick %', 'A Defuse %', 'B Pick %', 
+        'B Defuse %', 'C Pick %', 'C Defuse %'
+    ]
+    new_data = []
+    
+    for agent in agents_a + agents_b:
+        agent_data = data[data['Agent'] == agent].iloc[0]
+        new_data.append([
+            agent_data['Score'], agent_data['Pick %'], agent_data['Dmg/Round'], agent_data['KDA'],
+            agent_data['Attacker Win %'], agent_data['Attacker KDA'],
+            agent_data['Defender Win %'], agent_data['Defender KDA'],
+            agent_data['A Pick %'], agent_data['A Defuse %'], 
+            agent_data['B Pick %'], agent_data['B Defuse %'],
+            agent_data['C Pick %'], agent_data['C Defuse %']
+        ])
+    
+    # แปลงข้อมูลใหม่เป็น DataFrame
+    new_df = pd.DataFrame(new_data, columns=features)
 
-    for agent_a, agent_b in zip(agent_a_list, agent_b_list):
-        # ดึงข้อมูลจาก DataFrame ที่ใช้ในการฝึกโมเดล
-        entry_a = training_data[training_data['Agent'] == agent_a]
-        entry_b = training_data[training_data['Agent'] == agent_b]
+    # ทำนายผล
+    predictions = model.predict(new_df)
+    
+    # หาค่าเฉลี่ยของค่าทำนายจากตัวที่ 1 ถึงตัวที่ 5
+    # average_prediction = np.mean(predictions[:5])
 
-        # คำนวณค่าที่ต้องใช้ในการคาดการณ์
-        if not entry_a.empty and not entry_b.empty:
-            row_a = entry_a.iloc[0]
-            row_b = entry_b.iloc[0]
+    # กำหนดผู้ชนะจากค่าเฉลี่ย
+    # winner = 'Team A' if average_prediction <= 0.5 else 'Team B'
+    team_a_mean = predictions[:5].mean()  # Mean of the first 5 values
+    team_b_mean = predictions[-5:].mean()  # Mean of the last 5 values
 
-            data.append({
-                'Score': (row_a['Score'] + row_b['Score']) / 2,
-                'Trend': row_a['Trend'],
-                'Pick %': (float(row_a['Pick %'].replace('%', '')) + float(row_b['Pick %'].replace('%', ''))) / 2,
-                'Dmg/Round': (row_a['Dmg/Round'] + row_b['Dmg/Round']) / 2,
-                'KDA': (row_a['KDA'] + row_b['KDA']) / 2,
-                'Map': map_name,
-                'Agent A': agent_a,
-                'Agent B': agent_b
-            })
-
-    # สร้าง DataFrame จากข้อมูลทั้งหมด
-    df_input = pd.DataFrame(data)
-
-    # แปลง Trend และ Map เป็นตัวเลข (ทำให้ตรงกับที่โมเดลคาดหวัง)
-    df_input = pd.get_dummies(df_input, columns=['Trend'], drop_first=True)
-
-    # ตรวจสอบฟีเจอร์ทั้งหมดที่โมเดลคาดหวัง (ใช้ฟีเจอร์ที่ถูกต้องจากโมเดล)
-    expected_features = ['Score', 'Pick %', 'Dmg/Round', 'KDA'] 
-
-    # ตรวจสอบและจัดเรียงคอลัมน์ให้ตรงกับที่โมเดลคาดหวัง
-    df_input = df_input[expected_features]
-
-    df_input = np.zeros((len(df_input), 28, 1))  
-
-    # ทำการคาดการณ์
-    predicted_win_rate = model.predict(df_input)
-
-    # สร้างผลลัพธ์ว่าทีม A หรือ B ชนะ
-    team_wins = []
-    if predicted_win_rate[0][0] >= 0.5:
-        team_wins = "Team A Win"
+    # Comparison
+    if team_a_mean > team_b_mean:
+        winner = 'Team A'
+        # print("Team A")
     else:
-        team_wins = "Team B Win"
+        winner = 'Team B'
+        # print("Team B")
+        
+    # Display the means
+    print(f"team a mean: {team_a_mean}")
+    print(f"team b mean: {team_b_mean}")
+    return winner, predictions, (team_a_mean, team_b_mean)
 
-    return team_wins, predicted_win_rate.mean(), df_input
+# รับข้อมูลจากผู้ใช้
+data = pd.read_csv('data_clean.csv')
+# agents_team_a = ['Omen', 'Cypher', 'Skye', 'Raze', 'Jett']
+# agents_team_b = ['Harbor', 'Killjoy', 'Viper', 'Jett', 'Skye']
+# map_name = 'Lotus'
 
-if __name__ == '__main__':
-    training_data = pd.read_csv('data_clean.csv')
-    agent_a_list = ['Killjoy','Brimstone','Raze','Sova','Breach']
-    agent_b_list = ['Breach','Killjoy','Raze','Brimstone','Viper']
-    map_name =' Fracture'
-    # agent_a_list = input("กรุณากรอกชื่อ Agent Team A (คั่นด้วยเครื่องหมายจุลภาค): ").split(',')
-    # agent_b_list = input("กรุณากรอกชื่อ Agent Team B (คั่นด้วยเครื่องหมายจุลภาค): ").split(',')
-    # map_name = input("กรุณากรอกชื่อแผนที่: ")
+agents_team_a = ['Astra', 'Skye', 'Viper', 'Raze', 'Jett']
+agents_team_b = ['Skye', 'Viper', 'Chamber', 'Astra', 'Raze']
+map_name = 'Split'
 
-    predicted_team_winner, predicted_win_rate , dfinput= predict_team_winner(training_data, agent_a_list, agent_b_list, map_name)
-    # แสดงผลการคาดการณ์
-    # print(predicted_win_rate)/
+# ทำนายผู้ชนะ
+# predicted_winner , prediction= predict_winner(agents_team_a, agents_team_b, map_name)
+predicted_winner, prediction, avg_prediction = predict_winner(agents_team_a, agents_team_b, map_name)
 
-    print(f'ผลการคาดการณ์ทีมที่ชนะ: {predicted_team_winner}')
-    predicted_win_rate = model.predict(dfinput)
-    print(f'Win rate for Team A: {predicted_win_rate[0][0] * 100:.2f}%')
-    print(f'Win rate for Team B: {predicted_win_rate[0][1] * 100:.2f}%')
-
+print(f'The predicted winner is {predicted_winner}')
+print(avg_prediction)
+# print(prediction)
