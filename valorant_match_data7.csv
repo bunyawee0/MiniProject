@@ -1,0 +1,41 @@
+match_id,map_name,team,agent,k,d,a,adr,winner
+haven_000001,Haven,Fnatic,Iso,22,12,3,206,Fnatic
+haven_000001,Haven,Fnatic,Yoru,21,13,5,179,Fnatic
+haven_000001,Haven,Fnatic,Cypher,17,15,7,154,Fnatic
+haven_000001,Haven,Fnatic,Omen,14,10,9,119,Fnatic
+haven_000001,Haven,Team Vitality,Sova,11,10,7,114,Fnatic
+haven_000001,Haven,Team Vitality,Sova,13,15,4,144,Fnatic
+haven_000001,Haven,Team Vitality,Breach,13,17,6,119,Fnatic
+haven_000001,Haven,Team Vitality,Cypher,11,18,5,107,Fnatic
+haven_000001,Haven,Team Vitality,Omen,12,18,6,109,Fnatic
+haven_000001,Haven,Team Vitality,Jett,11,17,1,91,Fnatic
+ascent_000001,Ascent,Fnatic,Sova,24,15,2,203,Team Vitality
+ascent_000001,Ascent,Fnatic,Iso,15,16,5,134,Team Vitality
+ascent_000001,Ascent,Fnatic,Yoru,14,18,7,126,Team Vitality
+ascent_000001,Ascent,Fnatic,Cypher,11,15,8,98,Team Vitality
+ascent_000001,Ascent,Team Vitality,Astra,10,15,6,77,Team Vitality
+ascent_000001,Ascent,Team Vitality,Jett,21,12,3,176,Team Vitality
+ascent_000001,Ascent,Team Vitality,Sova,20,16,6,159,Team Vitality
+ascent_000001,Ascent,Team Vitality,Killjoy,14,15,10,139,Team Vitality
+ascent_000001,Ascent,Team Vitality,Omen,12,15,11,94,Team Vitality
+ascent_000001,Ascent,Team Vitality,KAY/O,12,16,9,86,Team Vitality
+lotus_000001,Lotus,Fnatic,Viper,21,14,13,182,Fnatic
+lotus_000001,Lotus,Fnatic,Killjoy,22,15,3,141,Fnatic
+lotus_000001,Lotus,Fnatic,Raze,14,15,7,144,Fnatic
+lotus_000001,Lotus,Fnatic,Fade,12,15,12,103,Fnatic
+lotus_000001,Lotus,Team Vitality,Omen,11,14,16,89,Fnatic
+lotus_000001,Lotus,Team Vitality,Cypher,17,17,7,146,Fnatic
+lotus_000001,Lotus,Team Vitality,Breach,17,15,11,136,Fnatic
+lotus_000001,Lotus,Team Vitality,Omen,16,16,6,123,Fnatic
+lotus_000001,Lotus,Team Vitality,Raze,12,17,5,120,Fnatic
+lotus_000001,Lotus,Team Vitality,Fade,11,16,12,124,Fnatic
+bind_000001,Bind,Fnatic,Viper,18,8,8,199,Fnatic
+bind_000001,Bind,Fnatic,Clove,14,10,10,152,Fnatic
+bind_000001,Bind,Fnatic,Skye,14,5,8,155,Fnatic
+bind_000001,Bind,Fnatic,Raze,13,11,4,142,Fnatic
+bind_000001,Bind,Team Vitality,Gekko,12,7,5,129,Fnatic
+bind_000001,Bind,Team Vitality,Raze,9,14,8,161,Fnatic
+bind_000001,Bind,Team Vitality,Gekko,10,14,4,118,Fnatic
+bind_000001,Bind,Team Vitality,Viper,7,14,4,101,Fnatic
+bind_000001,Bind,Team Vitality,Fade,7,14,3,102,Fnatic
+bind_000001,Bind,Team Vitality,Omen,7,15,5,68,Fnatic
